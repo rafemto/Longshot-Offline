@@ -14,7 +14,7 @@ jobs:
           gh release download v3.0.0 --repo ${{ github.repository }} --pattern 'Longshot-v3.0.0-OFFLINE-split.*'
       - name: Join and verify
         run: |
-                    zip -F Longshot-v3.0.0-OFFLINE-split.zip --out Longshot-v3.0.0-OFFLINE-Windows.zip
+          zip -F Longshot-v3.0.0-OFFLINE-split.zip --out Longshot-v3.0.0-OFFLINE-Windows.zip
           echo "bf0b7c0732158573dd7c9c233c4889cb0f7fac8c16df280ab4389b3c01e627a0  Longshot-v3.0.0-OFFLINE-Windows.zip" | sha256sum -c -
       - name: Upload joined zip
         env:
