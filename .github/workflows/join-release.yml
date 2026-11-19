@@ -1,0 +1,23 @@
+name: Join split release
+on:
+  workflow_dispatch:
+jobs:
+  join:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download split parts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download v3.0.0 --repo ${{ github.repository }} --pattern 'Longshot-v3.0.0-OFFLINE-split.*'
+      - name: Join and verify
+        run: |
+          cat Longshot-v3.0.0-OFFLINE-split.z01 Longshot-v3.0.0-OFFLINE-split.z02 Longshot-v3.0.0-OFFLINE-split.z03 Longshot-v3.0.0-OFFLINE-split.zip > Longshot-v3.0.0-OFFLINE-Windows.zip
+          echo "bf0b7c0732158573dd7c9c233c4889cb0f7fac8c16df280ab4389b3c01e627a0  Longshot-v3.0.0-OFFLINE-Windows.zip" | sha256sum -c -
+      - name: Upload joined zip
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload v3.0.0 Longshot-v3.0.0-OFFLINE-Windows.zip --repo ${{ github.repository }} --clobber
